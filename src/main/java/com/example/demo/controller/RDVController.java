@@ -126,10 +126,11 @@ public class RDVController {
 			List<LocalDateTime> date = new ArrayList();
 			List<RendezVous> rdvList = rendezVousRepository.findByMedecin(Med);
 			for (RendezVous v : rdvList) {
+				if(v.getDate()!=null) {
 				if (LocalDateTime.now().isBefore(v.getDate())) {
 					date.add(v.getDate());
 				
-
+				}
 				}
 			}
 

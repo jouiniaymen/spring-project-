@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Modelrdv {
 	Long idmedci;
 	Long idpatient;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 
 	LocalDateTime daterdv;
 	public Long getIdmedci() {

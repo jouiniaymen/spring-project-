@@ -95,7 +95,10 @@ public class Patient {
     private Long id;
   
     private String nom;
-    @Temporal(TemporalType.DATE)
+    public Patient() {
+		super();
+	}
+	@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateNaissance;
     private boolean malade;

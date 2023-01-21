@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,13 +47,13 @@ public class KeycloakController {
 	private Keycloak getKeycloakInstance() {
 
 		return Keycloak.getInstance(env.getProperty("keycloak.auth-server-url"), env.getProperty("keycloak.realm"),
-				"techuser", "admin", "CABINETBE");
+				"techuser", "admin", "CABINETBE","WjgzcjxhhpfDuJgyeIITucHOIoxj7jDw");
 	}
 
 	@PostMapping("/user")
 	public ResponseEntity<String> createUser(@RequestParam String username, @RequestParam String email,
 			@RequestParam String firstname, @RequestParam String lastname, @RequestParam String password,
-			 @RequestParam String address, @RequestParam String telephone) {
+			 @RequestParam String address,@RequestParam String role, @RequestParam String telephone) {
 		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(email)) {
 			return ResponseEntity.badRequest().body("Empty username or password");
 		}
@@ -69,7 +70,12 @@ public class KeycloakController {
 		userRepresentation.setEnabled(true);
 		userRepresentation.setCredentials(Arrays.asList(credentials));
 		userRepresentation.setEmailVerified(false);
+HashMap<String, List<String> >  roles =new HashMap<String,List<String>>();
+List<String> a=new ArrayList<String>();
+a.add(role);
+roles.put(role,a);
 
+		userRepresentation.setClientRoles(roles);
 		Keycloak keycloak = getKeycloakInstance();
 
 		Response result = keycloak.realm(env.getProperty("keycloak.realm")).users().create(userRepresentation);
@@ -90,23 +96,11 @@ public class KeycloakController {
 
 			UserResource userResource = keycloak.realm(env.getProperty("keycloak.realm")).users()
 					.get(userRepresentation.getId());
-
-	/*		Member member = new Member();
-			try {
-				UserRepresentation user = userResource.toRepresentation();
-				member.setKeycloakId(user.getId());
-				assignRoles(user.getId(), Arrays.asList(role.name()));
-				userResource.sendVerifyEmail();
-				member.setEmail(email);
-				member.setName(firstname);
-				member.setLastName(lastname);
-				member.setRole(role);
-				member.setTelephone(telephone);
-				member.setAddress(address);
-				memberService.createOrUpdateMember(member);
-			} catch (NotFoundException e) {
-				System.out.println(e);
-			}*/
+     if(userResource.toRepresentation().getClientRoles().keySet().stream().findFirst().equals("PATIENT"))
+    	 
+     {
+			
+			
 		}
 
 		return new ResponseEntity<>(HttpStatus.valueOf(result.getStatus()));

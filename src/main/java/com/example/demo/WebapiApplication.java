@@ -15,9 +15,7 @@ import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties
 @SpringBootApplication
 @EnableConfigurationProperties
 public class WebapiApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(WebapiApplication.class, args);
 	}
-
 }
